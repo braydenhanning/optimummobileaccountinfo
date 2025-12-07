@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mobile Account Setup</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 700px;
+        margin: 30px auto;
+    }
+    .line-block {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 8px;
+    }
+    h3 {
+        margin-top: 0;
+    }
+    input, select {
+        width: 100%;
+        padding: 6px;
+        margin: 4px 0 12px 0;
+        border-radius: 4px;
+        border: 1px solid #aaa;
+    }
+</style>
+</head>
+<body>
+
+<h1>Mobile Account Setup</h1>
+
+<label for="lineCount">How many mobile lines?</label>
+<input type="number" id="lineCount" min="1" max="20" />
+<button onclick="generateLines()">Generate Forms</button>
+<button onclick="window.print()">Print Forms</button>
+
+<div id="formsContainer"></div>
+
+<script>
+function generateLines() {
+    const count = parseInt(document.getElementById("lineCount").value, 10);
+    const container = document.getElementById("formsContainer");
+
+    container.innerHTML = ""; // clear old forms
+
+    if (!count || count < 1) return;
+
+    for (let i = 1; i <= count; i++) {
+        const block = document.createElement("div");
+        block.className = "line-block";
+
+        // If only 1 line OR this is the first line: show FULL form
+        if (count === 1 || i === 1) {
+            block.innerHTML = `
+                <h3>Line ${i} (Primary)</h3>
+
+                <label>Account Number:</label>
+                <input type="text" name="acct_${i}" placeholder="Account #">
+
+                <label>User ID:</label>
+                <input type="text" name="userid_${i}" placeholder="User login ID">
+
+                <label>Password:</label>
+                <input type="text" name="password_${i}" placeholder="Account password">
+
+                <label>Account PIN:</label>
+                <input type="text" name="pin_${i}" placeholder="Port-out/Account PIN">
+
+                <label>Temporary Phone Number:</label>
+                <input type="text" name="tempnum_${i}" placeholder="Number assigned at activation">
+
+                <label>Actual Phone Number:</label>
+                <input type="text" name="actualnum_${i}" placeholder="Customer's real number">
+
+                <label>Last 4 of Social:</label>
+                <input type="text" name="ssn_${i}" maxlength="4" placeholder="XXXX">
+
+                <label>Previous Carrier:</label>
+                <input type="text" name="carrier_${i}" placeholder="Verizon, AT&T, T-Mobile, etc.">
+
+                <label>Phone PIN:</label>
+                <input type="text" name="phonepin_${i}" maxlength="4" placeholder="XXXX">
+
+                <label>Apple ID:</label>
+                <input type="text" name="appleid_${i}" placeholder="Apple ID email (if applicable)">
+
+                <label>Apple ID Password:</label>
+                <input type="text" name="appleidpassword_${i}" placeholder="Apple ID Password (if applicable)">
+            `;
+        } else {
+            // Lines 2+ when there is more than 1 line: SHORT form
+            block.innerHTML = `
+                <h3>Line ${i}</h3>
+
+                <label>Email:</label>
+                <input type="email" name="email_${i}" placeholder="Customer email">
+
+                <label>Phone PIN:</label>
+                <input type="text" name="phonepin_${i}" maxlength="4" placeholder="XXXX">
+
+                <label>Temporary Phone Number:</label>
+                <input type="text" name="tempnum_${i}" placeholder="Temp number for this line">
+
+                <label>Port Phone Number:</label>
+                <input type="text" name="portnum_${i}" placeholder="Number being ported in">
+
+                <label>Monthly Rate:</label>
+                <input type="text" name="rate_${i}" placeholder="$ / month for this line">
+
+                <label>Apple ID:</label>
+                <input type="text" name="appleid_${i}" placeholder="Apple ID email (if applicable)">
+
+                <label>Apple ID Password:</label>
+                <input type="text" name="appleidpassword_${i}" placeholder="Apple ID Password (if applicable)">
+            `;
+        }
+
+        container.appendChild(block);
+    }
+}
+</script>
+
+</body>
+</html>
