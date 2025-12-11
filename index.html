@@ -25,6 +25,25 @@
         border-radius: 4px;
         border: 1px solid #aaa;
     }
+#floatingPrintBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    z-index: 9999;
+}
+
+#floatingPrintBtn:hover {
+    background: #0056c7;
+}
+
 </style>
 </head>
 <body>
@@ -34,7 +53,8 @@
 <label for="lineCount">How many mobile lines?</label>
 <input type="number" id="lineCount" min="1" max="20" />
 <button onclick="generateLines()">Generate Forms</button>
-<button onclick="window.print()">Print Forms</button>
+<button id="floatingPrintBtn" onclick="openPrintView()">Print Forms</button>
+
 
 <div id="formsContainer"></div>
 
@@ -51,7 +71,6 @@ function generateLines() {
         const block = document.createElement("div");
         block.className = "line-block";
 
-        // If only 1 line OR this is the first line: show FULL form
         if (count === 1 || i === 1) {
             block.innerHTML = `
                 <h3>Line ${i} (Primary)</h3>
@@ -90,7 +109,6 @@ function generateLines() {
                 <input type="text" name="appleidpassword_${i}" placeholder="Apple ID Password (if applicable)">
             `;
         } else {
-            // Lines 2+ when there is more than 1 line: SHORT form
             block.innerHTML = `
                 <h3>Line ${i}</h3>
 
@@ -120,7 +138,139 @@ function generateLines() {
         container.appendChild(block);
     }
 }
+
+function openPrintView() {
+    const container = document.getElementById("formsContainer");
+    const blocks = container.querySelectorAll(".line-block");
+
+    if (!blocks.length) {
+        alert("Generate the mobile account forms first.");
+        return;
+    }
+
+    // Build simple text-only HTML from the existing forms
+    let printContent = "";
+
+    blocks.forEach((block, index) => {
+        const titleEl = block.querySelector("h3");
+        const title = titleEl ? titleEl.textContent.trim() : `Line ${index + 1}`;
+
+        printContent += `<section class="line-section">`;
+        printContent += `<h2>${title}</h2>`;
+
+        const labels = block.querySelectorAll("label");
+        labels.forEach(label => {
+            const labelText = label.textContent.trim();
+            const input = label.nextElementSibling; // the input right after the label
+            let value = "";
+
+            if (input && (input.tagName === "INPUT" || input.tagName === "SELECT")) {
+                value = input.value || "";
+            }
+
+            if (value) {
+                printContent += `<p><strong>${labelText}</strong>: ${value}</p>`;
+            } else {
+                printContent += `<p><strong>${labelText}</strong>:</p>`;
+            }
+        });
+
+        printContent += `</section>`;
+    });
+
+    // Open a new tab
+    const printWindow = window.open("", "_blank");
+
+    // Very simple text-focused layout
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Print Mobile Account Info</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12pt;
+                    max-width: 700px;
+                    margin: 20px 30px;
+
+    filter: invert(1) hue-rotate(180deg);
+    background: black;        /* ensures no bright white remains */
+    color: white;             /* ensures readable text */
+}
+                }
+
+.logo-wrapper {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.logo {
+    width: 180px; /* adjust size if needed */
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+/* Make the logo repeat at the top of every printed page */
+@media print {
+    .logo-wrapper {
+        position: running(header);
+    }
+    @page {
+        @top-center {
+            content: element(header);
+        }
+    }
+}
+                h1 {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                h2 {
+                    margin-top: 25px;
+                    margin-bottom: 10px;
+                    border-bottom: 1px solid #000;
+                    padding-bottom: 4px;
+                }
+                p {
+                    margin: 4px 0;
+                    padding: 3px 0;
+                    border-bottom: 1px solid #000;
+                }
+                .line-section {
+                    margin-bottom: 20px;
+                    page-break-after: always; /* each line can go on its own page */
+                }
+                @page {
+                    margin: 15mm;
+                }
+            </style>
+        </head>
+<body>
+    <div class="logo-wrapper">
+        <img src="https://www.optimumsavings.com/wp-content/uploads/2023/10/optimum-mobile-logo.png" class="logo">
+    </div>
+
+    <h1>Mobile Account Setup</h1>
+
+    ${printContent}
+</body>
+
+        </html>
+    `);
+
+    printWindow.document.close();
+
+    printWindow.addEventListener("load", function () {
+        printWindow.focus();
+        printWindow.print();
+    });
+}
+
+
 </script>
+
 
 </body>
 </html>
