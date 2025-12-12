@@ -75,62 +75,62 @@ function generateLines() {
             block.innerHTML = `
                 <h3>Line ${i} (Primary)</h3>
 
-                <label>Account Number:</label>
+                <label>Account Number</label>
                 <input type="text" name="acct_${i}" placeholder="Account #">
 
-                <label>User ID:</label>
+                <label>User ID</label>
                 <input type="text" name="userid_${i}" placeholder="User login ID">
 
-                <label>Password:</label>
+                <label>Password</label>
                 <input type="text" name="password_${i}" placeholder="Account password">
 
-                <label>Account PIN:</label>
+                <label>Account PIN</label>
                 <input type="text" name="pin_${i}" placeholder="Port-out/Account PIN">
 
-                <label>Temporary Phone Number:</label>
+                <label>Temporary Phone Number</label>
                 <input type="text" name="tempnum_${i}" placeholder="Number assigned at activation">
 
-                <label>Actual Phone Number:</label>
+                <label>Actual Phone Number</label>
                 <input type="text" name="actualnum_${i}" placeholder="Customer's real number">
 
-                <label>Last 4 of Social:</label>
+                <label>Last 4 of Social</label>
                 <input type="text" name="ssn_${i}" maxlength="4" placeholder="XXXX">
 
-                <label>Previous Carrier:</label>
+                <label>Previous Carrier</label>
                 <input type="text" name="carrier_${i}" placeholder="Verizon, AT&T, T-Mobile, etc.">
 
-                <label>Phone PIN:</label>
+                <label>Phone PIN</label>
                 <input type="text" name="phonepin_${i}" maxlength="4" placeholder="XXXX">
 
-                <label>Apple ID:</label>
+                <label>Apple ID</label>
                 <input type="text" name="appleid_${i}" placeholder="Apple ID email (if applicable)">
 
-                <label>Apple ID Password:</label>
+                <label>Apple ID Password</label>
                 <input type="text" name="appleidpassword_${i}" placeholder="Apple ID Password (if applicable)">
             `;
         } else {
             block.innerHTML = `
                 <h3>Line ${i}</h3>
 
-                <label>Email:</label>
+                <label>Email</label>
                 <input type="email" name="email_${i}" placeholder="Customer email">
 
-                <label>Phone PIN:</label>
+                <label>Phone PIN</label>
                 <input type="text" name="phonepin_${i}" maxlength="4" placeholder="XXXX">
 
-                <label>Temporary Phone Number:</label>
+                <label>Temporary Phone Number</label>
                 <input type="text" name="tempnum_${i}" placeholder="Temp number for this line">
 
-                <label>Port Phone Number:</label>
+                <label>Port Phone Number</label>
                 <input type="text" name="portnum_${i}" placeholder="Number being ported in">
 
-                <label>Monthly Rate:</label>
+                <label>Monthly Rate</label>
                 <input type="text" name="rate_${i}" placeholder="$ / month for this line">
 
-                <label>Apple ID:</label>
+                <label>Apple ID</label>
                 <input type="text" name="appleid_${i}" placeholder="Apple ID email (if applicable)">
 
-                <label>Apple ID Password:</label>
+                <label>Apple ID Password</label>
                 <input type="text" name="appleidpassword_${i}" placeholder="Apple ID Password (if applicable)">
             `;
         }
@@ -189,17 +189,14 @@ function openPrintView() {
             <meta charset="UTF-8">
             <title>Print Mobile Account Info</title>
             <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    font-size: 12pt;
-                    max-width: 700px;
-                    margin: 20px 30px;
-
-    filter: invert(1) hue-rotate(180deg);
-    background: black;        /* ensures no bright white remains */
-    color: white;             /* ensures readable text */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    max-width: 700px;
+    margin: 20px 30px;
+    background: white;
+    color: black;
 }
-                }
 
 .logo-wrapper {
     text-align: center;
@@ -248,11 +245,11 @@ function openPrintView() {
             </style>
         </head>
 <body>
-    <div class="logo-wrapper">
-        <img src="https://www.optimumsavings.com/wp-content/uploads/2023/10/optimum-mobile-logo.png" class="logo">
-    </div>
+<div class="logo-wrapper">
+    <img src="https://github.com/braydenhanning/optimummobileaccountinfo/blob/main/images/logo/Untitled_Artwork.png?raw=true" class="logo">
+</div>
 
-    <h1>Mobile Account Setup</h1>
+    <h1>Mobile Account Info</h1>
 
     ${printContent}
 </body>
